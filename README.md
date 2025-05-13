@@ -4,23 +4,27 @@ This is a 2D golf game built with **Pygame** and **Open Sound Control (OSC)** in
 
 ---
 
-## 📌 Features
-
-- Parallax scrolling background
-- OSC-based gyroscope input for controlling the golf club
-- Realistic ball physics and collision detection
-- Simple, extendable architecture with modular components
-
----
+## 🛠️ Project Structure
+```
+parallax-golf-game/
+├── main.py # Main game loop and rendering
+├── components.py # GolfBall, GolfClub, Background, Obstacles, etc.
+├── handlers.py # OSC listener and gyroscope data handler
+├── init.py # Game initialization logic
+├── assets/ # Game assets (images, sounds, etc.)
+├── README.md # Project documentation (this file)
+```
 
 ## 🚀 Getting Started
 
-### Prerequisites
+### Prerequisites - Python
 
 - Python 3.8+ [Download Python](https://www.python.org/downloads/)
 - pip (python package manager -> inclusive in Python 3.4+ from python.org)
 
-### Install Dependencies
+### Prerequisites - OSC
+
+### Installation
 
 1. **Clone the repository**
 2. **Navigate to the git folder**
