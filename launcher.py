@@ -1,7 +1,6 @@
 import pygame
 import components as gc
 import handlers as osc
-import time
 import init as initialize
 
 ########################### osc thread init ###############################
@@ -17,6 +16,7 @@ ball: gc.GolfBall = game_objects["ball"]
 hole: gc.GolfHole = game_objects["hole"]
 screen_height = game_objects["screen_height"]
 screen_width = game_objects["screen_width"]
+world_width = game_objects["world_width"]
 pygame.display.set_caption("Parallax Background Example")
 
 ###################### Initial ball and club position  #####################
@@ -26,6 +26,7 @@ prev_club_position = club_position.copy()
 
 ###################### game init ###########################################
 pygame.init()
+club_ball_offset = pygame.Vector2(20, 0)
 camera_x = 0
 clock = pygame.time.Clock()
 game_finished = False
@@ -55,9 +56,9 @@ while running:
     
     # check if game is finished or not
     if not game_finished and not ball.is_moving():
-        prev_club_position = ball.get_ball_position() - pygame.Vector2(20, 0)
-        # check for a strike
+        prev_club_position = ball.get_ball_position() - club_ball_offset
 
+        # check for a strike
         strike_occurred, direction = club.check_strike(club_position, ball, camera_x)
         if(strike_occurred):
             update_club = True
@@ -69,7 +70,7 @@ while running:
     if ball.is_moving():
         club_position = club.update_club_position(club_position, x, z, screen_height, screen_width)
     elif(update_club and not ball.is_moving()):
-        club_position = ball.get_ball_position() - pygame.Vector2(20, 0) - pygame.Vector2(camera_x, 0)
+        club_position = ball.get_ball_position() - club_ball_offset - pygame.Vector2(camera_x, 0)
         update_club = False
     else:
         club_position = club.update_club_position(club_position, x, z, screen_height, screen_width)
@@ -78,7 +79,7 @@ while running:
     obstacles.draw(camera_x)
 
     if not game_finished:
-        camera_x = max(0, min(ball.get_ball_position().x - screen_width // 4, 5000 - screen_width))
+        camera_x = max(0, min(ball.get_ball_position().x - screen_width // 4, world_width - screen_width))
 
     initialize.screen_blit(screen)
     pygame.display.flip()  

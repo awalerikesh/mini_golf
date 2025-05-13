@@ -34,6 +34,7 @@ def game_initialization():
         "hole": golfHole,
         "screen_height": screen_cfg.height,
         "screen_width": screen_cfg.width,
+        "world_width": screen_cfg.world_width,
         "camera_x": 0,
         "clock": pygame.time.Clock(),
         "game_finished": False,
