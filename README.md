@@ -29,6 +29,8 @@ mini-golf-game/
 - Python 3.8+ [Download Python](https://www.python.org/downloads/)
 - pip (python package manager -> inclusive in Python 3.4+ from python.org)
 
+---
+
 ### Prerequisites - OSC
 
 To enable gyroscope-based club control, this project uses **Open Sound Control (OSC)** data streamed from a mobile device using the **Sensors2OSC** app. You’ll need the following setup:
@@ -72,6 +74,9 @@ Relevant code is located in:
 ```python
 handlers/
 ├── gyroscopeHandler.py     # Starts a threaded OSC server
+```
+
+---
 
 ### Game Installation - Local
 
