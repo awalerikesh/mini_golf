@@ -76,6 +76,7 @@ while running:
         club_position = club.update_club_position(club_position, x, z, screen_height, screen_width)
         
     club.draw_golf_stick(club_position)    
+    hole.draw_hole(camera_x)
     obstacles.draw(camera_x)
 
     if not game_finished:

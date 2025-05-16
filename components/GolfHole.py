@@ -13,7 +13,7 @@ class GolfHole:
         self._color_white = golfHoleSetup.color_white
 
     def draw_hole(self, camera_x):
-        screen_pos = self._hole_position - pygame.Vector2(camera_x, 0) + self._screenOffset
+        screen_pos = self._hole_position - pygame.Vector2(camera_x, 0) + self._screen_offset
         center = (int(screen_pos.x), int(screen_pos.y))
         pygame.draw.circle(self._screen, self._color_black, center, self._hole_radius + self._outline_thickness)
         pygame.draw.circle(self._screen, self._color_white, center, self._hole_radius)

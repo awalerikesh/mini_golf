@@ -133,9 +133,9 @@ def create_golf_hole_setup(screen: ScreenSetup, colors: Colors) -> GolfHoleSetup
         width = screen.width,
         height = screen.height,
         hole_radius=15,
-        hole_position=pygame.Vector2(3800, screen.height // 2),
+        hole_position=pygame.Vector2(15, screen.height // 2),
         outline_thickness=5,
-        screen_offset=pygame.Vector2(1000, 0),
+        screen_offset=pygame.Vector2(500, 0),
         color_black=colors.black,
         color_white=colors.white
     )

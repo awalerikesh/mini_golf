@@ -11,6 +11,21 @@ class GolfClub:
         self._swing_power = golfClubSetup.swing_power
         self._club_color = golfClubSetup.color
 
+    def get_width(self):
+        return self._width
+    
+    def get_height(self):
+        return self._height
+    
+    def get_distance(self):
+        return self._distance
+    
+    def get_swing_power(self):
+        return self._swing_power
+    
+    def get_screen(self):
+        return self._screen
+    
     """Draws the golf club as a rectangle on the given surface at the specified start position."""
     def draw_golf_stick(self, position):
         handle_x = position.x - self._width // 2 - self._distance
@@ -27,7 +42,8 @@ class GolfClub:
         club_position.y = min(max(club_position.y + z_coordinate * 5, 0), screen_height)
         return club_position
 
-    """Check if the club strikes the ball"""
+    """
+    #Check if the club strikes the ball
     def check_strike(self, club_position, ball: GolfBall, camera_x):
         # Calculate screen position of the ball (adjusted to represent the front side)
         screen_ball_position = ball.get_ball_position() + pygame.Vector2(ball.get_ball_radius() * 2, 0) - pygame.Vector2(camera_x, 0)
@@ -45,11 +61,13 @@ class GolfClub:
 
         return False, direction_to_ball
 
-    """Calculate the ball velocity using the previous and current ball position"""
+    #Calculate the ball velocity using the previous and current ball position
     def calculate_ball_velocity(self, prev_club_position, curr_club_position, direction_to_ball, ball: GolfBall):
         speed = (curr_club_position - prev_club_position).length()
         strike_power = min(speed, self._swing_power)
         direction = direction_to_ball.normalize()
         ball_velocity = direction * strike_power
         ball.set_ball_velocity(ball_velocity)
+
+    """
 
