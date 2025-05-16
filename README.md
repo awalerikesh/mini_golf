@@ -35,8 +35,6 @@ mini-golf-game/
 
 To enable gyroscope-based club control, this project uses **Open Sound Control (OSC)** data streamed from a mobile device using the **Sensors2OSC** app. You’ll need the following setup:
 
----
-
 #### 🧭 Step 1: Install Sensors2OSC via F-Droid
 
 The **Sensors2OSC** app is available on **F-Droid**, a trusted platform for open-source Android applications.
@@ -49,8 +47,6 @@ The **Sensors2OSC** app is available on **F-Droid**, a trusted platform for open
 
 3. **Install Sensors2OSC** on your phone.
 
----
-
 #### 📱 Step 2: Configure Sensors2OSC
 
 Once installed:
@@ -62,8 +58,6 @@ Once installed:
    - **Target Port**: `12345`.
 
 > 💡 Make sure both your phone and computer are on the **same Wi-Fi network**.
-
----
 
 #### 💻 Step 3: OSC Handler in the Game
 
@@ -78,15 +72,27 @@ handlers/
 
 ---
 
-### Game Installation - Local
+### 🕹️ Game Installation – Local Setup
 
-1. **Clone the repository**
-2. **Navigate to the git folder**
-3. **Install necessary packages**
-4. **Launch the game**
+Follow these steps to set up and run the Mini Golf game locally:
+
+#### 1️⃣ Clone the Repository
 
 ```bash
 git clone https://github.com/awalerikesh/mini_golf.git
-cd {path}/mini_golf
+```
+
+#### 2️⃣ Navigate to the Project Directory
+```bash
+cd mini_golf
+```
+
+#### 3️⃣ Install Dependencies
+```bash
 pip install -r requirements.txt
-python laucher.py
+```
+
+#### 4️⃣ Launch the Game
+```bash
+python launcher.py
+```
