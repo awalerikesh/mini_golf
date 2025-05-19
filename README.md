@@ -17,7 +17,8 @@ mini-golf-game/
 │ └── gyroscopeHandler.py   # OSC server and data handling
 ├── init.py                 # Game initialization logic and setup
 ├── README.md               # Project documentation (this file)
-└──  docs/                  # Documentation folder (API docs, setup guide, etc.)
+└── docs/                   # Documentation folder (API docs, setup guide, etc.)
+└── img/                    # Images used for the game 
 ```
 
 ---
