@@ -20,6 +20,7 @@ mini-golf-game/
 ├── README.md               # Project documentation (this file)
 └── docs/                   # Documentation folder (API docs, setup guide, etc.)
 └── img/                    # Images used for the game 
+└── sound/                  # sound used for the game
 ```
 
 ---
