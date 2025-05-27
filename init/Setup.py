@@ -14,7 +14,7 @@ pygame.init()
 class ScreenSetup:
     width: int = 800
     height: int = 600
-    world_width: int = 5000
+    world_width: int = 4200
 
     def create_screen(self) -> pygame.Surface:
         return pygame.display.set_mode((self.width, self.height))
@@ -108,8 +108,8 @@ class BackgroundSetup:
 
 def create_golf_club_setup(screen: ScreenSetup, colors: Colors) -> GolfClubSetup:
     return GolfClubSetup(
-        width=10,
-        height=50,
+        width=15,
+        height=70,
         distance=30,
         swing_power=10,
         color=colors.brown,
@@ -132,10 +132,10 @@ def create_golf_hole_setup(screen: ScreenSetup, colors: Colors) -> GolfHoleSetup
     return GolfHoleSetup(
         width = screen.width,
         height = screen.height,
-        hole_radius=15,
+        hole_radius=30,
         hole_position=pygame.Vector2(15, screen.height // 2),
         outline_thickness=5,
-        screen_offset=pygame.Vector2(3800, 0),
+        screen_offset=pygame.Vector2(4000, 0),
         color_black=colors.black,
         color_white=colors.white
     )
@@ -155,7 +155,7 @@ def create_obstacles_setup(screen: ScreenSetup, colors: Colors) -> ObstaclesSetu
             (2400, 200, h // 2),
             (3200, 100, h // 2),
             (3800, 150, h // 2),
-            (4400, 150, h // 2)
+            (4200, 150, h)
         ]
     ]
 

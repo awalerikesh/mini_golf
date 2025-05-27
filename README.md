@@ -15,6 +15,7 @@ mini-golf-game/
 │ └── Obstacles.py          # Class for managing obstacles and collision detection
 ├── handlers/               # Folder for OSC listener and gyroscope data handler
 │ └── gyroscopeHandler.py   # OSC server and data handling
+│ └── GameHandler.py
 ├── init.py                 # Game initialization logic and setup
 ├── README.md               # Project documentation (this file)
 └── docs/                   # Documentation folder (API docs, setup guide, etc.)

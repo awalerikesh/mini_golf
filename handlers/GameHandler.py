@@ -1,8 +1,9 @@
 import components as gc
 import pygame
+import sys
 
 class GameHandler:
-    def __init__(self, background: gc.Background, screen, ball: gc.GolfBall, club: gc.GolfClub, hole: gc.GolfHole, obstacles: gc.Obstacles, width, height, world_width):
+    def __init__(self, background: gc.Background, screen, ball: gc.GolfBall, club: gc.GolfClub, hole: gc.GolfHole, obstacles: gc.Obstacles, height, width, world_width):
         self._background: gc.Background = background
         self._screen = screen
         self._ball: gc.GolfBall = ball
@@ -81,7 +82,7 @@ class GameHandler:
         speed = (self._club.get_current_club_position() - self._club.get_previous_club_position()).length()
         strike_power = min(speed, self._club.get_swing_power())
         direction = direction_to_ball.normalize()
-        ball_velocity = direction * strike_power
+        ball_velocity = (direction * strike_power) * 1.4
         self._ball.set_ball_velocity(ball_velocity)
     
     """Updates the ball's position and handles friction, boundaries, and collisions."""
@@ -92,6 +93,7 @@ class GameHandler:
             ball_velocity = self._ball.get_ball_velocity()
             ball_position += ball_velocity # Move the ball
             self._ball.set_ball_position(ball_position)
+            #self._apply_whirlpool_force()
             self._ball.draw(self._screen, self.get_camera_x())   # Draw the updated ball position
         else:
             self._stop_ball() # If ball velocity is too small, stop the ball
@@ -115,7 +117,6 @@ class GameHandler:
         ball_velocity *= self._ball.get_ball_friction()
         self._ball.set_ball_velocity(ball_velocity)
         if self._ball.get_ball_velocity().length() < self._ball.get_ball_min_speed():
-            print("Ball stopped.")
             self._ball.set_ball_velocity(pygame.Vector2(0, 0)) 
 
     """Stops the ball by setting its velocity to zero."""
@@ -143,6 +144,7 @@ class GameHandler:
         for barrier in self._obstacles.get_barriers():
             ball_rect = pygame.Rect(self._ball.get_ball_position().x - self._ball.get_ball_radius(), self._ball.get_ball_position().y - self._ball.get_ball_radius(), self._ball.get_ball_radius() * 2, self._ball.get_ball_radius() * 2)
             if barrier.rect.colliderect(ball_rect):
+                self.play_rebound_sound()
                 ball_velocity = self._ball.get_ball_velocity()
                 if barrier.rect.width > barrier.rect.height:
                     ball_velocity.y *= -1
@@ -160,10 +162,10 @@ class GameHandler:
         ball_velocity = self._ball.get_ball_velocity()
         ball_position = self._ball.get_ball_position()
         ball_radius = self._ball.get_ball_radius()
-        max_x = 5000
-        if ball_position.x - ball_radius < 0 or ball_position.x + ball_radius > max_x:
+        if ball_position.x - ball_radius < 0 or ball_position.x + ball_radius > self._world_width:
+            self.play_rebound_sound()
             ball_velocity.x *= -1
-            ball_position.x = max(ball_radius, min(ball_position.x, max_x - ball_radius))
+            ball_position.x = max(ball_radius, min(ball_position.x, self._world_width - ball_radius))
         self._ball.set_ball_position(ball_position)
         self._ball.set_ball_velocity(ball_velocity)
 
@@ -175,10 +177,59 @@ class GameHandler:
         ball_radius = self._ball.get_ball_radius()
         screen_height = self._ball.get_screen_height()
         if ball_position.y - ball_radius < 0 or ball_position.y + ball_radius > screen_height:
+            self.play_rebound_sound()
             ball_velocity.y *= -1
             ball_position.y = max(ball_radius, min(ball_position.y, screen_height - ball_radius))
         self._ball.set_ball_position(ball_position)
         self._ball.set_ball_velocity(ball_velocity)
+
+    def check_ball_golf(self):
+        ball_pos = self._ball.get_ball_position() + pygame.Vector2(self._ball.get_ball_radius() * 2, 0) - pygame.Vector2(self._camera_x, 0)
+        hole_pos = self._hole.get_hole_position() - pygame.Vector2(self._camera_x, 0) + self._hole._screen_offset
+        if abs(ball_pos.x - hole_pos.x) < 10 and abs(ball_pos.y - hole_pos.y) < 10:
+            self.set_running_game(False)
+            self.update_ball()
+            self._ball.set_ball_velocity(pygame.Vector2(0, 0))
+            return True
+
+    def show_image_and_wait(self):
+        image = pygame.image.load(r".\img\startscreen.PNG")
+        screen = self.get_screen()
+        screen_height = self.get_screen_height()
+        screen_width = self.get_screen_width()
+        image = pygame.transform.scale(image, (screen_height, screen_width))
+        screen.blit(image, (0, 0))
+        pygame.display.flip()
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+            if event.type == pygame.KEYDOWN:
+                return False
+        return True
+                    
+    def _apply_whirlpool_force(self):
+        ball_velocity = self._ball.get_ball_velocity()
+        ball_pos = self._ball.get_ball_position()
+        for wp in self._obstacles.get_whirlpools():
+            dist = (ball_pos - wp["center"]).length()
+            if dist < wp["radius"]:
+                direction = (wp["center"] - ball_pos).normalize()
+                perpendicular = pygame.Vector2(-direction.y, direction.x)
+                ball_velocity += direction * 0.1 + perpendicular * 0.2
+        self._ball.set_ball_velocity(ball_velocity)
+
+    def play_strike_sound(self):
+        pygame.mixer.init()
+        hit_sound = pygame.mixer.Sound(r".\sound\golf-ball-hit.wav")  
+        hit_sound.set_volume(0.5)  
+        pygame.mixer.Sound.play(hit_sound)  
+            
+    def play_rebound_sound(self):
+        pygame.mixer.init()
+        rebound_sound = pygame.mixer.Sound(r".\sound\rebound.wav")  
+        rebound_sound.set_volume(0.5)  
+        pygame.mixer.Sound.play(rebound_sound) 
 
     def draw_ball(self):
         self._ball.draw(self.get_screen(), self.get_camera_x())

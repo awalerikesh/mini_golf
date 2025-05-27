@@ -56,6 +56,9 @@ class Obstacles:
 
     def get_barriers(self):
         return self._barriers
+    
+    def get_whirlpools(self):
+        return self._whirlpools
 
     
     
