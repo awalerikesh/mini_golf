@@ -93,11 +93,11 @@ class GameHandler:
             ball_velocity = self._ball.get_ball_velocity()
             ball_position += ball_velocity # Move the ball
             self._ball.set_ball_position(ball_position)
-            #self._apply_whirlpool_force()
             self._ball.draw(self._screen, self.get_camera_x())   # Draw the updated ball position
         else:
             self._stop_ball() # If ball velocity is too small, stop the ball
 
+        self._apply_whirlpool_force()
         # Check and handle boundary collisions (edges of the screen)
         self._check_and_handle_boundaries()
 
@@ -212,12 +212,20 @@ class GameHandler:
         ball_velocity = self._ball.get_ball_velocity()
         ball_pos = self._ball.get_ball_position()
         for wp in self._obstacles.get_whirlpools():
-            dist = (ball_pos - wp["center"]).length()
-            if dist < wp["radius"]:
-                direction = (wp["center"] - ball_pos).normalize()
+            dist = (ball_pos - wp.center).length()
+            if dist < wp.radius:
+                direction = (wp.center - ball_pos).normalize()
                 perpendicular = pygame.Vector2(-direction.y, direction.x)
-                ball_velocity += direction * 0.1 + perpendicular * 0.2
+                ball_velocity += direction * 0.8 + perpendicular * 0.8
         self._ball.set_ball_velocity(ball_velocity)
+
+    def reset_club(self):
+        club_position = self._ball.get_ball_position() - pygame.Vector2(20, 0) - pygame.Vector2(self._camera_x, 0)
+        self._club.set_current_club_position(club_position)
+        self.set_update_club(True)
+
+    def reset_game(self):
+        self.set_camera_x(0)
 
     def play_strike_sound(self):
         pygame.mixer.init()
