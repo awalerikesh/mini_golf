@@ -41,7 +41,7 @@ while True:
             gh.handle_strike(direction_to_ball)
 
     gh.draw_ball()
-    gh.update_club_position(x, z)
+    gh.update_club_position(y, z)
     gh.draw_club()
     gh.draw_obstacles()
     gh.draw_hole()  

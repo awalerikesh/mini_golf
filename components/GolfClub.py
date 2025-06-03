@@ -33,6 +33,6 @@ class GolfClub:
 
     def update_club_position(self, x_coordinate, z_coordinate, screen_height, screen_width):
         club_position = self.get_current_club_position()
-        club_position.x = min(max(club_position.x + x_coordinate * 5, 0), screen_width//3)
+        club_position.x = min(max(club_position.x + x_coordinate * 5, 0), screen_width)
         club_position.y = min(max(club_position.y + z_coordinate * 5, 0), screen_height)
         self.set_current_club_position(club_position)
