@@ -49,7 +49,9 @@ while True:
     if not gh.is_game_finished():
         gh.update_camera()
 
-    if gh.check_ball_golf():
+    elapsed_time = (pygame.time.get_ticks() - start_time) / 1000
+    if elapsed_time > 1:
+    #if gh.check_ball_golf():
        gh.show_gameover_and_wait(start_time)
        gh = initialize.game_initialization()
        start_time = pygame.time.get_ticks() 
