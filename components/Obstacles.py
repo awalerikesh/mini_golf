@@ -11,14 +11,15 @@ class Obstacles:
         self._barrier_color = obstacleSetup.barrier_color
         self._whirlpool_color = obstacleSetup.whirlpool_color
 
-    """Draws all moving barriers adjusted for the camera position."""
+    def get_barriers(self):   return self._barriers
+    def get_whirlpools(self): return self._whirlpools
+
     def _draw_barriers(self,camera_x):
         for barrier in self._barriers:
             rect = barrier.rect.copy()
             rect.x -= camera_x
             pygame.draw.rect(self._screen, self._barrier_color, rect)
 
-    """Draws visual effect for whirlpools as concentric purple circles.""" 
     def _draw_whirlpools(self, camera_x):
         for wp in self._whirlpools:
             center_screen = wp.center - pygame.Vector2(camera_x, 0)
@@ -38,7 +39,6 @@ class Obstacles:
                 barrier.rect.y = self._height - barrier.rect.height
                 barrier.direction = "up"
 
-    """Applies a swirling force to the ball when inside a whirlpool.The ball is attracted to the center and rotated slightly."""
     def apply_whirlpool_force(self, ballVelocity, ball_position):
         for wp in self._whirlpools:
             dist = (ball_position - wp.center).length()
@@ -48,17 +48,7 @@ class Obstacles:
                 ballVelocity += direction * 0.1 + perpendicular * 0.2
         return ballVelocity
 
-    """Draws all obstacles, adjusted for the camera view."""
     def draw(self, camera_x):
         self._draw_barriers(camera_x)
         self._move_barriers()
         self._draw_whirlpools(camera_x)
-
-    def get_barriers(self):
-        return self._barriers
-    
-    def get_whirlpools(self):
-        return self._whirlpools
-
-    
-    
