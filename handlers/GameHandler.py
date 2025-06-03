@@ -200,20 +200,47 @@ class GameHandler:
         image = pygame.transform.scale(image, (screen_height, screen_width))
         screen.blit(image, (0, 0))
         pygame.display.flip()
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                pygame.quit()
-                sys.exit()
-            if event.type == pygame.KEYDOWN:
-                return False
-        return True
+        while True:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    pygame.quit()
+                    sys.exit()
+                if event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_ESCAPE:
+                        pygame.display.iconify()
+                if event.type == pygame.KEYDOWN:
+                    return True
                     
+    def show_gameover_and_wait(self, start_time):
+        font_setup = pygame.font.SysFont(None, 36)
+        completion_time = (pygame.time.get_ticks() - start_time) / 1000.0
+        image = pygame.image.load(r".\img\gameover.PNG")
+        screen = self.get_screen()
+        screen_height = self.get_screen_height()
+        screen_width = self.get_screen_width()
+        image = pygame.transform.scale(image, (screen_height, screen_width))
+        screen.blit(image, (0, 0))
+        screen.blit(font_setup.render(f"Completion Time: {completion_time:.2f} seconds", True, (255, 255, 255)), (10, 50))
+        self.play_gameover_sound()
+        pygame.display.flip()
+        while True:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    pygame.quit()
+                    sys.exit()
+                if event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_ESCAPE:
+                        pygame.display.iconify()
+                    if event.type == pygame.KEYDOWN:
+                        return True
+
     def _apply_whirlpool_force(self):
         ball_velocity = self._ball.get_ball_velocity()
         ball_pos = self._ball.get_ball_position()
         for wp in self._obstacles.get_whirlpools():
             dist = (ball_pos - wp.center).length()
             if dist < wp.radius:
+                self.play_whirpool_sound()
                 direction = (wp.center - ball_pos).normalize()
                 perpendicular = pygame.Vector2(-direction.y, direction.x)
                 ball_velocity += direction * 0.8 + perpendicular * 0.8
@@ -238,6 +265,18 @@ class GameHandler:
         rebound_sound = pygame.mixer.Sound(r".\sound\rebound.wav")  
         rebound_sound.set_volume(0.5)  
         pygame.mixer.Sound.play(rebound_sound) 
+
+    def play_whirpool_sound(self):
+        pygame.mixer.init()
+        whirlpool_sound = pygame.mixer.Sound(r".\sound\woop.wav")  
+        whirlpool_sound.set_volume(0.5)  
+        pygame.mixer.Sound.play(whirlpool_sound) 
+
+    def play_gameover_sound(self):
+        sound = pygame.mixer.Sound(r".\sound\Tada.flac")  
+        sound.set_volume(0.5)  
+        pygame.mixer.Sound.play(sound) 
+
 
     def draw_ball(self):
         self._ball.draw(self.get_screen(), self.get_camera_x())

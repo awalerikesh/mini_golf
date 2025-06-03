@@ -45,10 +45,10 @@ def screen_blit_time(screen, start_time):
     screen.blit(font_setup.text_setup.render("Press C to Reset the Club", True, colors.white), (10, 50))
     screen.blit(font_setup.text_setup.render(f"Time: {elapsed_time:.2f}s", True, colors.white), (10, 90))
 
-def screen_blit_game_finished(screen):
+def screen_blit_game_finished(screen, start_time):
     font_setup = FontSetup()
     colors = Colors()
     print(ScreenSetup.width)
-    completion_time = (pygame.time.get_ticks()) / 1000.0
-    screen.blit(font_setup.text_setup.render("Game Set and Done! Press R to Restart", True, colors.white), (10, 100))
-    screen.blit(font_setup.text_setup.render(f"Time: {completion_time:.2f} seconds", True, colors.white), (10, 150))
+    completion_time = (pygame.time.get_ticks() - start_time) / 1000.0
+    screen.blit(font_setup.text_setup.render("Game Set and Done! Press R to Restart", True, colors.white), (10, 10))
+    screen.blit(font_setup.text_setup.render(f"Time: {completion_time:.2f} seconds", True, colors.white), (10, 50))

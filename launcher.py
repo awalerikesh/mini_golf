@@ -13,13 +13,8 @@ pygame.display.set_caption("Mini Golf")
 
 ###################### game init ###########################################
 pygame.init()
+game_handlers.show_image_and_wait()
 start_time = pygame.time.get_ticks()
-start_screen = True
-
-while start_screen:
-    status = game_handlers.show_image_and_wait()
-    if(status == False):
-       start_screen = False
 
 while True:
     # get osc data
@@ -30,7 +25,6 @@ while True:
 
     game_handlers.draw_background()
     game_handlers.update_ball()
-    game_handlers.draw_club()
     
     # check for events
     for event in pygame.event.get():
@@ -48,9 +42,9 @@ while True:
     
     if not game_handlers.is_game_finished() and not game_handlers.is_ball_moving():
         strike_occured, direction_to_ball = game_handlers.check_strike()
+
         if(strike_occured):
             game_handlers.play_strike_sound()
-
             game_handlers.handle_strike(direction_to_ball)
 
     game_handlers.draw_ball()
@@ -63,8 +57,12 @@ while True:
         game_handlers.update_camera()
 
     if game_handlers.check_ball_golf():
-       initialize.screen_blit_game_finished(game_handlers.get_screen())
+       initialize.screen_blit_game_finished(game_handlers.get_screen(), start_time)
+       game_handlers.show_gameover_and_wait(start_time)
+       game_handlers = initialize.game_initialization()
+       start_time = pygame.time.get_ticks() 
     else:
         initialize.screen_blit_time(game_handlers.get_screen(), start_time)
+
     pygame.display.flip()  
     game_handlers.get_clock().tick(60)

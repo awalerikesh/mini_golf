@@ -9,8 +9,8 @@ class GolfClub:
         self._distance = golfClubSetup.distance
         self._swing_power = golfClubSetup.swing_power
         self._club_color = golfClubSetup.color
-        self._current_club_position = pygame.Vector2(0,0)
-        self._previous_club_position = pygame.Vector2(0,0)
+        self._current_club_position = golfClubSetup.initial_position
+        self._previous_club_position = golfClubSetup.initial_position
 
     def set_current_club_position(self, position):
         self._current_club_position = position
